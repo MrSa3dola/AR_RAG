@@ -55,6 +55,12 @@ def display_images(image_paths):
     plt.show()
 
 
+# user pormpt -> extract attribute (bed, red, curve, ...)
+# db photo {color, type ,...}
+# smilarity top k
+#
+
+
 def extract_items_from_prompt(prompt):
     # Define a LangChain prompt template
     prompt_template = PromptTemplate(
@@ -183,5 +189,3 @@ for item, data in results.items():
         display_images([data["image_paths"][chosen_option]])
     else:
         print(f"No specific option was chosen by the LLM for {item}.")
-
-

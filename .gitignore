@@ -5,7 +5,11 @@ __pycache__/
 llama
 # C extensions
 *.so
-
+##
+Ikea Photos
+old Photos
+tmp_assets
+##
 # Distribution / packaging
 .Python
 build/
