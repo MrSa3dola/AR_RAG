@@ -102,4 +102,4 @@ def get_similar(question):
     return result
 
 
-print(get_similar("white sofa"))
+# print(get_similar("white sofa"))
