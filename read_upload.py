@@ -85,20 +85,21 @@ def upload():
 
 
 # upload()
-def query():
+def get_similar(question):
     pc = Pinecone(api_key=os.getenv("PINE_CONE_API_KEY"))
     index = pc.Index("ar-rag")
     model = load_model()
-    question = "white armchair"
     embedding = model.encode(question)
-    # print(embedding.tolist())
-    response = index.query(
+    data = index.query(
         vector=embedding.tolist(),
-        top_k=2,
+        top_k=3,
         include_metadata=True,
     )
+    result = [
+        {"image_path": match["metadata"]["image_path"], "score": match["score"]}
+        for match in data["matches"]
+    ]
+    return result
 
-    print(response)
 
-
-query()
+print(get_similar("white sofa"))

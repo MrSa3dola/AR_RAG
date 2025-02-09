@@ -3,3 +3,10 @@ langchain==0.3.15
 langchain-community==0.3.15
 pillow==10.4.0
 tiktoken==0.8.0
+
+fastapi
+uvicorn
+python-multipart
+pydantic
+requests
+python-dotenv
