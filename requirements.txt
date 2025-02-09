@@ -10,3 +10,7 @@ python-multipart
 pydantic
 requests
 python-dotenv
+transformers
+pandas
+pinecone
+sentence_transformers
