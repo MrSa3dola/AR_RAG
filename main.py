@@ -35,7 +35,7 @@ class MessageRequest(BaseModel):
 
 @app.post("/get-item")
 async def get_item(request: MessageRequest):
-    print()
+    print(request)
     # extract from gemini
     extracted = extract_attributes(request.text)
     # similarity search from pince cone
