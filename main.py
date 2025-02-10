@@ -4,9 +4,8 @@ import sys
 from typing import Callable
 
 import dotenv
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile  # Changed import
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 from gemini_api import extract_attributes
@@ -14,13 +13,13 @@ from read_upload import get_similar
 
 app = FastAPI()
 dotenv.load_dotenv()
-# Add CORS middleware
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -29,19 +28,12 @@ async def root():
     return {"message": "Hello World"}
 
 
-class MessageRequest(BaseModel):
-    text: str
-
-
 @app.post("/get-item")
-async def get_item(request: MessageRequest):
-    print(request)
-    # extract from gemini
-    extracted = extract_attributes(request.text)
-    # similarity search from pince cone
+async def get_item(file: UploadFile = File(...)):  # Changed parameter
+    # Read and decode the file
+    contents = await file.read()
+    text = contents.decode("utf-8")
+
+    extracted = extract_attributes(text)
     similar = get_similar(extracted)
-    # similar -> list of {image_path_2d, image_path_3d, score}
     return similar
-    # image_2d = get_image_2d(image_path_2d)
-    # image_3d = get_image_3d(image_path_3d)
-    # return image_3d
