@@ -4,7 +4,7 @@ import sys
 from typing import Callable
 
 import dotenv
-from fastapi import FastAPI, File, UploadFile  # Changed import
+from fastapi import FastAPI, File, Request, UploadFile  # Changed import
 from fastapi.middleware.cors import CORSMiddleware
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -29,10 +29,12 @@ async def root():
 
 
 @app.post("/get-item")
-async def get_item(file: UploadFile = File(...)):  # Changed parameter
+async def get_item(request: Request):  # Changed parameter
     # Read and decode the file
-    contents = await file.read()
-    text = contents.decode("utf-8")
+    text = request.json()["text"]
+    # text = request.form.get("user")
+    # contents = await file.read()
+    # text = contents.decode("utf-8")
 
     extracted = extract_attributes(text)
     similar = get_similar(extracted)
