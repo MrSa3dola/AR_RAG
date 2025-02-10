@@ -4,8 +4,10 @@ import sys
 from typing import Callable
 
 import dotenv
+import matplotlib.pyplot as plt
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from PIL import Image
 from pydantic import BaseModel
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
@@ -35,13 +37,26 @@ class MessageRequest(BaseModel):
 
 @app.post("/get-item")
 async def get_item(request: MessageRequest):
-    print(request)
-    # extract from gemini
+    # print(request)
     extracted = extract_attributes(request.text)
-    # similarity search from pince cone
     similar = get_similar(extracted)
-    # similar -> list of {image_path_2d, image_path_3d, score}
-    return {"content": similar}
-    # image_2d = get_image_2d(image_path_2d)
-    # image_3d = get_image_3d(image_path_3d)
-    # return image_3d
+
+    processed_similar = []
+    for item in similar:
+        image_filename = item["image_path"]
+        # Extract product ID from filename (assumes format: {product_id}_image_{num}.jpg)
+        product_id = image_filename.split("_image_")[0]
+
+        # Create paths
+        image_2d = f"./assets/{product_id}/{image_filename}"
+        image_3d_filename = image_filename.replace(".jpg", ".glb")
+        image_3d = f"./assets/{product_id}/{image_3d_filename}"
+
+        processed_similar.append(
+            {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
+        )
+
+    # photo = Image.open("./assets/chaise_longues_57527/chaise_longues_57527_image_2.jpg")
+    # plt.imshow(photo)
+    # plt.show()
+    return {"content": processed_similar}
