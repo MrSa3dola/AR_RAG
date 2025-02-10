@@ -16,6 +16,10 @@ from read_upload import get_similar
 
 app = FastAPI()
 dotenv.load_dotenv()
+from fastapi.staticfiles import StaticFiles
+
+# Mount static directory (this should be in your main FastAPI setup)
+app.mount("/static", StaticFiles(directory="assets"), name="static")
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
