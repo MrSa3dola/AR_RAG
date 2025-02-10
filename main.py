@@ -35,13 +35,13 @@ class MessageRequest(BaseModel):
 
 @app.post("/get-item")
 async def get_item(request: MessageRequest):
-
+    print(request)
     # extract from gemini
     extracted = extract_attributes(request.text)
     # similarity search from pince cone
     similar = get_similar(extracted)
     # similar -> list of {image_path_2d, image_path_3d, score}
-    return {"content": similar[0]}
+    return {"content": similar}
     # image_2d = get_image_2d(image_path_2d)
     # image_3d = get_image_3d(image_path_3d)
     # return image_3d
