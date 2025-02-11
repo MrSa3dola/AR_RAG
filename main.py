@@ -4,15 +4,29 @@ import sys
 from typing import Callable
 
 import dotenv
+import google.generativeai as genai
 import matplotlib.pyplot as plt
+import torch
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from PIL import Image
 from pydantic import BaseModel
-from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from transformers import (
+    AutoModelForSeq2SeqLM,
+    AutoTokenizer,
+    BlipForConditionalGeneration,
+    BlipProcessor,
+)
 
 from gemini_api import extract_attributes
 from read_upload import get_similar
+from recommendation import (
+    generate_caption,
+    get_the_item_name,
+    prompt_template,
+    recommend,
+)
 
 # from search_agent import go_scrap
 
@@ -29,6 +43,13 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],  # Allow all methods (GET, POST, etc.)
     allow_headers=["*"],  # Allow all headers
+)
+
+caption_processor = BlipProcessor.from_pretrained(
+    "Salesforce/blip-image-captioning-large"
+)
+caption_model = BlipForConditionalGeneration.from_pretrained(
+    "Salesforce/blip-image-captioning-large"
 )
 
 
@@ -70,3 +91,24 @@ async def get_item(request: MessageRequest):
     # plt.show()
     # return {"content_scrapped": processed_similar}
     return {"content_scrapped": "msh mawgoda"}
+
+
+prev_items = []
+
+
+@app.post("/recommend/")
+async def create_upload_file(file: UploadFile = File(...)):
+    image_data = await file.read()
+    image = Image.open(io.BytesIO(image_data)).convert("RGB")
+
+    furniture_text = "the room contains"
+    furniture_items = generate_caption(
+        caption_processor, caption_model, furniture_text, image
+    )
+
+    color_text = "The wall color is"
+    room_color = generate_caption(caption_processor, caption_model, color_text, image)
+
+    recommendation = recommend(furniture_items, room_color, prev_items)
+
+    return JSONResponse(content={"recommendation": recommendation})
