@@ -106,4 +106,4 @@ def get_similar(question):
     return result
 
 
-# print(get_similar("gray wardrobe"))
+print(get_similar("brown sofa"))

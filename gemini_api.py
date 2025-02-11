@@ -120,9 +120,9 @@ def extract_attributes(user_query):
             },
         ]
     )
-    return response.text.strip(), response2.text.strip()
+    return response2.text.strip()
 
 
-a, b = extract_attributes("recommend to me a white sofa and I want it to be modern")
-print(a)
-print(b)
+# a, b = extract_attributes("recommend to me a white sofa and I want it to be modern")
+# print(a)
+# print(b)
