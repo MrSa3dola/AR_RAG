@@ -58,12 +58,12 @@ async def get_item(request: MessageRequest):
         image_2d = f"./assets/{product_id}/{image_filename}"
         image_3d_filename = image_filename.replace(".jpg", ".glb")
         image_3d = f"./assets/{product_id}/{image_3d_filename}"
-        if item["score"] >= 0.8:
-            processed_similar.append(
-                {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
-            )
-    if len(processed_similar) != 0:
-        return {"content": processed_similar}
+        # if item["score"] >= 0.8:
+        processed_similar.append(
+            {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
+        )
+    # if len(processed_similar) != 0:
+    return {"content": processed_similar}
     # processed_similar = go_scrap()
     # photo = Image.open("./assets/chaise_longues_57527/chaise_longues_57527_image_2.jpg")
     # plt.imshow(photo)
