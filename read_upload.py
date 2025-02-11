@@ -92,14 +92,18 @@ def get_similar(question):
     embedding = model.encode(question)
     data = index.query(
         vector=embedding.tolist(),
-        top_k=3,
+        top_k=4,
         include_metadata=True,
     )
     result = [
-        {"image_path": match["metadata"]["image_path"], "score": match["score"]}
+        {
+            "image_path": match["metadata"]["image_path"],
+            "score": match["score"],
+            "caption": match["metadata"]["caption"],
+        }
         for match in data["matches"]
     ]
     return result
 
 
-# print(get_similar("white sofa"))
+# print(get_similar("gray wardrobe"))

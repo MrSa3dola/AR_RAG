@@ -13,6 +13,7 @@ from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 
 from gemini_api import extract_attributes
 from read_upload import get_similar
+from search_agent import go_scrap
 
 app = FastAPI()
 dotenv.load_dotenv()
@@ -55,12 +56,14 @@ async def get_item(request: MessageRequest):
         image_2d = f"./assets/{product_id}/{image_filename}"
         image_3d_filename = image_filename.replace(".jpg", ".glb")
         image_3d = f"./assets/{product_id}/{image_3d_filename}"
-
-        processed_similar.append(
-            {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
-        )
-
+        if item["score"] >= 0.8:
+            processed_similar.append(
+                {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
+            )
+    if len(processed_similar) != 0:
+        return {"content": processed_similar}
+    processed_similar = go_scrap()
     # photo = Image.open("./assets/chaise_longues_57527/chaise_longues_57527_image_2.jpg")
     # plt.imshow(photo)
     # plt.show()
-    return {"content": processed_similar}
+    return {"content_scrapped": processed_similar}
