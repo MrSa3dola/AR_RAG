@@ -92,7 +92,7 @@ def get_similar(question):
     embedding = model.encode(question)
     data = index.query(
         vector=embedding.tolist(),
-        top_k=4,
+        top_k=2,
         include_metadata=True,
     )
     result = [
