@@ -55,9 +55,9 @@ async def get_item(request: MessageRequest):
         product_id = image_filename.split("_image_")[0]
 
         # Create paths
-        image_2d = f"./assets/{product_id}/{image_filename}"
+        image_2d = f"{product_id}/{image_filename}"
         image_3d_filename = image_filename.replace(".jpg", ".glb")
-        image_3d = f"./assets/{product_id}/{image_3d_filename}"
+        image_3d = f"{product_id}/{image_3d_filename}"
         # if item["score"] >= 0.8:
         processed_similar.append(
             {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
