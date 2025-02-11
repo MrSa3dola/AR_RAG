@@ -63,7 +63,7 @@ async def get_item(request: MessageRequest):
             {"image_2d": image_2d, "image_3d": image_3d, "score": item["score"]}
         )
     # if len(processed_similar) != 0:
-    return {"content": processed_similar[0]}
+    return {"content": processed_similar}
     # processed_similar = go_scrap()
     # photo = Image.open("./assets/chaise_longues_57527/chaise_longues_57527_image_2.jpg")
     # plt.imshow(photo)
