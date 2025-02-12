@@ -81,46 +81,39 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 
-def extract_attributes(user_query):
+def extract_attributes(
+    user_message: str, conversation_history: list[dict]
+) -> tuple[str, dict]:
+    """
+    Process user message and return both chatbot response and extracted attributes
+
+    Args:
+        user_message: The current user message
+        conversation_history: List of previous messages in the conversation
+
+    Returns:
+        tuple: (chatbot_response, extracted_attributes)
+    """
+    # Configure the model
     model = genai.GenerativeModel("gemini-pro")
-    response = model.generate_content(
-        [
-            {
-                "role": "user",
-                "parts": [
-                    "Extract only the furniture attributes from the following query. "
-                    "Do not include any explanations or additional text. Just return "
-                    "the attributes as a concise phrase or list.\n\n"
-                    "Example:\n"
-                    "User query: I want a modern white armchair for my minimalist room.\n"
-                    "Response: modern white armchair\n\n"
-                    f"User query: {user_query}"
-                ],
-            }
+
+    # Build the conversation context
+    chat = model.start_chat(
+        history=[
+            {"role": "user" if msg["is_user"] else "assistant", "parts": [msg["text"]]}
+            for msg in conversation_history
         ]
     )
-    response2 = model.generate_content(
-        [
-            {
-                "role": "model",
-                "parts": [
-                    "You are a specialized AI that extracts only the furniture attributes "
-                    "from the user's input. Your response should be a concise phrase or list "
-                    "without explanations or additional text."
-                ],
-            },
-            {
-                "role": "user",
-                "parts": [
-                    "Example:\n"
-                    "User query: I want a modern white armchair for my minimalist room.\n"
-                    "Response: modern white armchair\n\n"
-                    f"User query: {user_query}"
-                ],
-            },
-        ]
-    )
-    return response2.text.strip()
+
+    # Get the chatbot's response
+    response = chat.send_message(user_message)
+    chat_response = response.text
+
+    # Extract furniture attributes if present in the message
+    attributes = {}
+    # Your existing attribute extraction logic here
+
+    return chat_response, attributes
 
 
 # a, b = extract_attributes("recommend to me a white sofa and I want it to be modern")

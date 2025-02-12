@@ -1,0 +1,3 @@
+- !pip install -qU tavily-python
+
+- crewai

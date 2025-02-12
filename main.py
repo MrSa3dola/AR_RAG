@@ -19,6 +19,7 @@ from transformers import (
     BlipProcessor,
 )
 
+from finalp_llm import app as furniture_router
 from gemini_api import extract_attributes
 from read_upload import get_similar
 from recommendation import (
@@ -33,6 +34,8 @@ from recommendation import (
 app = FastAPI()
 dotenv.load_dotenv()
 from fastapi.staticfiles import StaticFiles
+
+app.include_router(furniture_router, prefix="/api")
 
 # Mount static directory (this should be in your main FastAPI setup)
 app.mount("/static", StaticFiles(directory="assets"), name="static")
@@ -62,10 +65,15 @@ class MessageRequest(BaseModel):
     text: str
 
 
+conversation_history = []
+
+
 @app.post("/get-item")
 async def get_item(request: MessageRequest):
     # print(request)
-    extracted = extract_attributes(request.text)
+
+    extracted, history = extract_attributes(request.text, conversation_history)
+
     print("EXTRACTED == ", extracted)
     similar = get_similar(extracted)
 
