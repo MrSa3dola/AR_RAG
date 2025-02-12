@@ -120,3 +120,6 @@ async def create_upload_file(file: UploadFile = File(...)):
     recommendation = recommend(furniture_items, room_color, prev_items)
 
     return JSONResponse(content={"recommendation": recommendation})
+
+
+print("test")
