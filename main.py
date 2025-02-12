@@ -35,7 +35,7 @@ app = FastAPI()
 dotenv.load_dotenv()
 from fastapi.staticfiles import StaticFiles
 
-app.include_router(furniture_router, prefix="/api")
+app.include_router(furniture_router)
 
 # Mount static directory (this should be in your main FastAPI setup)
 app.mount("/static", StaticFiles(directory="assets"), name="static")
