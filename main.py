@@ -122,4 +122,3 @@ async def create_upload_file(file: UploadFile = File(...)):
     return JSONResponse(content={"recommendation": recommendation})
 
 
-print("test")
