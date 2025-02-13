@@ -7,10 +7,10 @@ from crewai.tools import tool
 from pydantic import BaseModel, Field
 from tavily import TavilyClient
 
-os.environ["OPENAI_API_KEY"] = "AIzaSyC1ub0DOeUNv72KYfwivHYNr_ScJIXThCA"
-genai.configure(api_key=os.environ["OPENAI_API_KEY"])
+# os.environ["OPENAI_API_KEY"] = "AIzaSyC1ub0DOeUNv72KYfwivHYNr_ScJIXThCA"
+# genai.configure(api_key=os.environ["OPENAI_API_KEY"])
 
-llm = LLM(model="gemini/gemini-2.0-flash", api_key=os.environ["OPENAI_API_KEY"])
+llm = LLM(model="gemini/gemini-2.0-flash", api_key=os.environ["GEMINI_API_KEY"])
 
 
 search_client = TavilyClient(api_key="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")
@@ -52,7 +52,7 @@ def amazon_fur(furniture_input):
             "give me the url of each product that you give me in the description"
         ),
         expected_output=(
-            "the  best 2 fit furniture with the input description"
+            "the best 2 fit furniture with the input description"
             "Each one in desciption format"
             "in string format not json format"
             "just show after the( ## Final Answer:) "

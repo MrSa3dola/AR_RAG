@@ -1,121 +1,89 @@
-# # import json
-# # import os
-
-# # import requests
-# # from dotenv import load_dotenv
-
-# # load_dotenv()
-
-
-# # def extract_attributes(user_query):
-# #     # Make the API request
-# #     response = requests.post(
-# #         url="https://openrouter.ai/api/v1/chat/completions",
-# #         headers={
-# #             "Authorization": "Bearer " + os.getenv("OPEN_ROUTER_API"),
-# #         },
-# #         data=json.dumps(
-# #             {
-# #                 "model": "google/gemini-2.0-pro-exp-02-05:free",
-# #                 "messages": [
-# #                     {
-# #                         "role": "system",
-# #                         "content": """Act as a system bot just extracting
-# #                             the furniture attributes from the input queries
-# #                             and make the response simple and no additional text
-# #                             Example:
-# #                             =====
-# #                             user question: I want to recommend to me an item for white room,
-# #                             let's say it's white armchair
-# #                             response you should return: white armchair
-# #                             """,
-# #                     },
-# #                     {
-# #                         "role": "user",  # Add the user query here
-# #                         "content": user_query,
-# #                     },
-# #                 ],
-# #             }
-# #         ),
-# #     )
-
-# #     # Extract and print the assistant's response
-# #     response_data = response.json()
-# #     content = response_data["choices"][0]["message"]["content"]
-
-# import os
-
-# #     return content
-# import google.generativeai as genai
-# from dotenv import load_dotenv
-
-# load_dotenv()
-
-# genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-
-# def extract_attributes(user_query):
-#     model = genai.GenerativeModel("gemini-pro")
-#     response = model.generate_content(
-#         [
-#             {"role": "user", "parts": [
-#                 "Extract only the furniture attributes from the following query. "
-#                 "Do not include any explanations or additional text. Just return "
-#                 "the attributes as a concise phrase or list.\n\n"
-#                 "Example:\n"
-#                 "User query: I want a modern white armchair for my minimalist room.\n"
-#                 "Response: modern white armchair\n\n"
-#                 f"User query: {user_query}"
-#             ]}
-#         ]
-#     )
-
-#     return response.text.strip()
-
 import os
 
 import google.generativeai as genai
+from crewai import LLM
 from dotenv import load_dotenv
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-
-def extract_attributes(
-    user_message: str, conversation_history: list[dict]
-) -> tuple[str, dict]:
-    """
-    Process user message and return both chatbot response and extracted attributes
-
-    Args:
-        user_message: The current user message
-        conversation_history: List of previous messages in the conversation
-
-    Returns:
-        tuple: (chatbot_response, extracted_attributes)
-    """
-    # Configure the model
-    model = genai.GenerativeModel("gemini-pro")
-
-    # Build the conversation context
-    chat = model.start_chat(
-        history=[
-            {"role": "user" if msg["is_user"] else "assistant", "parts": [msg["text"]]}
-            for msg in conversation_history
-        ]
+def extract_features_from_caption(caption):
+    llm = LLM(
+        model="gemini/gemini-2.0-flash",  # Replace with the correct model name
+        api_key=os.getenv("GEMINI_API_KEY"),
     )
 
-    # Get the chatbot's response
-    response = chat.send_message(user_message)
-    chat_response = response.text
+    try:
+        # Define the prompt for the LLM
+        prompt = f"""
+        You are an AI assistant specialized in extracting key features from image captions. Your task is to analyze the given caption and return the most important features in the format: "<color> <material> <object>".
 
-    # Extract furniture attributes if present in the message
-    attributes = {}
-    # Your existing attribute extraction logic here
+        Follow these guidelines:
+        1. Identify the **most prominent color** mentioned in the caption.
+           - If multiple colors are mentioned, choose the one most directly associated with the main object.
+        2. Determine the **primary material** described for the main object.
+           - If no specific material is mentioned, use a generic term like "material".
+        3. Extract the **main object** being described.
+           - Focus on the primary item in the caption.
+        4. Ignore secondary details, such as background or additional objects.
+        5. Return only the extracted features in the specified format.
 
-    return chat_response, attributes
+        Example 1:
+        Caption: "A red leather sofa with a wooden frame."
+        Output: red wooden sofa
+
+        Example 2:
+        Caption: "The image shows a light blue chaise longue with a chaise lounger on top of it."
+        Output: light blue chaise longue
+
+        Example 3:
+        Caption: "The image shows a wooden table and four chairs. The table is made of wood and the chairs are upholstered in a light-colored fabric. The chairs have a curved backrest and armrests."
+        Output:  wooden table and four chairs light-colored fabric
+
+        Example 4:
+        Caption: "TThe image shows a yellow two-seater sofa bed with two pillows on top of it."
+        Output: yellow sofa bed  
+
+        Example 5:
+        Caption: "The image shows a grey chair with white legs and a grey upholstered seat."
+        Output: grey chair with white legs
+
+        Example 6:
+        Caption: " The image shows a bed with a blue velvet headboard and metal legs, and a white bed sheet on top. The bed is part of the Modway Furniture Collection, featuring a modern and stylish design."
+        Output: bed with a blue velvet headboard and metal legs
+        
+        Example 7:
+        Caption: " The image shows a dark grey armchair with wooden legs and a black upholstered seat."
+        Output: dark grey armchair with wooden legs
+
+        Example 8:
+        Caption: " The image shows a bed with a grey headboard and wooden legs, and a white bed sheet on top. The bed frame is made of a sturdy material, and the headboard is upholstered in a neutral grey fabric."
+        Output: grey bed
+
+        Caption: {caption}
+
+        Output:
+        """
+        # Assuming the LLM has a method called `call` or `process`
+        result = llm.call(prompt)  # Replace `call` with the actual method name
+        return result.strip()
+    except Exception as e:
+        print(f"Error during task execution: {e}")
+        return None
 
 
-# a, b = extract_attributes("recommend to me a white sofa and I want it to be modern")
-# print(a)
-# print(b)
+# Example usage
+# caption1 = "The image shows a bed with a grey upholstered headboard and metal legs, and a white mattress on top of it. The bed frame is made of a sturdy metal frame, and the headboard is upholstery"
+# caption2 = "The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. It has a modern design with clean lines and a comfortable seating area, making it a great addition"
+# caption3 = "The image shows a black recliner chair. The chair has a sleek and modern design, with a comfortable cushion and armrests. It is upholstered in a soft black fabric, giving it a luxurious look"
+# caption4 = "hello, I wnat you to recommend me a beautiful sofa for my house and it's color black"
+
+# output1 = extract_features_from_caption(caption1)
+# output2 = extract_features_from_caption(caption2)
+# output3 = extract_features_from_caption(caption3)
+# output4 = extract_features_from_caption(caption4)
+
+# print(f"{output1}")
+# print(f"{output2}")
+# print(f"{output3}")
+# print(f"{output4}")
