@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from AIAgents_final import amazon_fur
 from scripts.upload_retrieve import get_similar
+from upload_retrieve2 import get_similar
 
 app = APIRouter()
 
