@@ -1,11 +1,11 @@
-ID,Type,Color,Image_Path,Caption
-1,Chaise Longues 57527,N/A,chaise_longues_57527_image_1.jpg,"The image shows a green chaise lounger, perfect for adding a touch of style and comfort to any living space."
-2,Chaise Longues 57527,N/A,chaise_longues_57527_image_2.jpg,"The image shows a light blue chaise longue with a chaise lounger on top of it."
-3,Chaise Longues 57527,N/A,chaise_longues_57527_image_3.jpg,"The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. The sofa has a sleek and modern design, with a comfortable cushion and armrests"
-4,Chaise Longues 57527,N/A,chaise_longues_57527_image_4.jpg,"The image shows a grey chaise lounger with two pillows on top of it."
-5,Chaise Longues 57527,N/A,chaise_longues_57527_image_5.jpg,"The image shows a black chaise lounge chair with a chaise lounger on top of it. The chair has a sleek, modern design with a comfortable cushion and armrests, making it perfect for"
-6,Chaise Longues 57527,N/A,chaise_longues_57527_image_6.jpg,"The image shows a black leather chaise lounger. It has a sleek and modern design, with a comfortable cushion and armrests. The leather upholstery is smooth and glossy, giving it a luxurious look"
-7,Chaise Longues 57527,N/A,chaise_longues_57527_image_7.jpg,"The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. It has a modern design with clean lines and a comfortable seating area, making it a great addition"
-8,Chaise Longues 57527,N/A,chaise_longues_57527_image_8.jpg,"The image shows a black leather sectional sofa with a chaise lounger. The sofa has a sleek and modern design, with a comfortable cushion and armrests. The chaise lounge is upholstered"
-9,Chaise Longues 57527,N/A,chaise_longues_57527_image_9.jpg,"The image shows a black and white sectional sofa with a chaise lounger, featuring a sleek and modern design. The sofa is upholstered in a luxurious black leather, giving it a sophisticated and stylish look. The"
-10,Chaise Longues 57527,N/A,chaise_longues_57527_image_10.jpg,"The image shows a beige chaise lounger, perfect for adding a touch of style and comfort to any living space."
+ID,Type,Image_Path,Caption,Price
+1,Chaise Longues 57527,chaise_longues_57527_image_1.jpg,"The image shows a green chaise lounger, perfect for adding a touch of style and comfort to any living space.",34995
+2,Chaise Longues 57527,chaise_longues_57527_image_2.jpg,The image shows a light blue chaise longue with a chaise lounger on top of it.,36900
+3,Chaise Longues 57527,chaise_longues_57527_image_3.jpg,"The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. The sofa has a sleek and modern design, with a comfortable cushion and armrests",32495
+4,Chaise Longues 57527,chaise_longues_57527_image_4.jpg,The image shows a grey chaise lounger with two pillows on top of it.,28995
+5,Chaise Longues 57527,chaise_longues_57527_image_5.jpg,"The image shows a black chaise lounge chair with a chaise lounger on top of it. The chair has a sleek, modern design with a comfortable cushion and armrests, making it perfect for",38300
+6,Chaise Longues 57527,chaise_longues_57527_image_6.jpg,"The image shows a black leather chaise lounger. It has a sleek and modern design, with a comfortable cushion and armrests. The leather upholstery is smooth and glossy, giving it a luxurious look",37495
+7,Chaise Longues 57527,chaise_longues_57527_image_7.jpg,"The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. It has a modern design with clean lines and a comfortable seating area, making it a great addition",24495
+8,Chaise Longues 57527,chaise_longues_57527_image_8.jpg,"The image shows a black leather sectional sofa with a chaise lounger. The sofa has a sleek and modern design, with a comfortable cushion and armrests. The chaise lounge is upholstered",56495
+9,Chaise Longues 57527,chaise_longues_57527_image_9.jpg,"The image shows a black and white sectional sofa with a chaise lounger, featuring a sleek and modern design. The sofa is upholstered in a luxurious black leather, giving it a sophisticated and stylish look. The",37495
+10,Chaise Longues 57527,chaise_longues_57527_image_10.jpg,"The image shows a beige chaise lounger, perfect for adding a touch of style and comfort to any living space.",34995

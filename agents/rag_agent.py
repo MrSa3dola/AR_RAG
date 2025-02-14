@@ -4,11 +4,12 @@ from tools.llm import LLM
 from tools.pine_cone_tool import rag
 
 rag_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=1000),
-    role="Furniture Recommender",
+    llm=LLM.llm(temperature=0, max_tokens=200),
+    role="rag_agent",
     goal="Use Pinecone to find furniture matching the user's query",
     backstory="An expert in interior design and furniture recommendations",
     tools=[rag],
+    allow_delegation=True,
     verbose=True,
 )
 
@@ -18,5 +19,5 @@ rag_task = Task(
     expected_output="A list of furniture items",
 )
 
-crew = Crew(agents=[rag_agent], tasks=[rag_task])
-result = crew.kickoff(inputs={"query": "green chaise longue"})
+# crew = Crew(agents=[rag_agent], tasks=[rag_task])
+# result = crew.kickoff(inputs={"query": "green chaise longue"})

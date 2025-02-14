@@ -4,8 +4,8 @@ from tools.llm import LLM
 from tools.web_scraper import web_scraper
 
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=1000),
-    role="Furniture Recommendation Agent",
+    llm=LLM.llm(temperature=0, max_tokens=200),
+    role="scrap_agent",
     goal=(
         "analyze furniture_listings from amazon of egypt, comparing each product's "
         "specifications against user-defined input criteria to recommend the best match."
@@ -17,7 +17,8 @@ scrap_agent = Agent(
         "and functionality to provide a tailored recommendation based on the provided criteria."
     ),
     tools=[web_scraper],
-    verbose=False,
+    allow_delegation=True,
+    verbose=True,
 )
 scraper_task = Task(
     description=(
@@ -39,6 +40,6 @@ scraper_task = Task(
     ),
 )
 
-crew = Crew(agents=[scrap_agent], tasks=[scraper_task])
-result = crew.kickoff(inputs={"query": "light blue chaise longue"})
-print(result)
+# crew = Crew(agents=[scrap_agent], tasks=[scraper_task])
+# result = crew.kickoff(inputs={"query": "light blue chaise longue"})
+# print(result)

@@ -24,6 +24,6 @@ def web_scraper(query: str) -> list:
 
     furniture_listings = search_client.search(
         query=query + ":https://www.amazon.eg/",
-        max_results=10,
+        max_results=3,
     )
     return furniture_listings

@@ -1,11 +1,11 @@
-ID,Type,Color,Image_Path,Caption
-1,Wardrobes 19053,N/A,wardrobes_19053_image_1.jpg,"The image shows a white armoire with two doors and two drawers."
-2,Wardrobes 19053,N/A,wardrobes_19053_image_2.jpg,"The image shows a white three-door wardrobe with three doors, perfect for storing clothes and other items. The wardrobe is made of a sturdy material and has a sleek, modern design. It has a glossy finish that reflects the light"
-3,Wardrobes 19053,N/A,wardrobes_19053_image_3.jpg,"The image shows a white armoire with two doors and two drawers. The armoire is part of the IKEA Malm collection and is perfect for storing clothes, shoes, and other items."
-4,Wardrobes 19053,N/A,wardrobes_19053_image_4.jpg,"The image shows a white armoire with two doors and two drawers. The armoire is from Ikea and is perfect for storing clothes, shoes, and other items. It has a sleek and modern"
-5,Wardrobes 19053,N/A,wardrobes_19053_image_5.jpg,"The image shows a white three-door wardrobe with mirrored doors, perfect for storing clothes and other items. The wardrobe has a sleek and modern design, with a white finish. The doors are mirrored."
-6,Wardrobes 19053,N/A,wardrobes_19053_image_6.jpg,"The image shows a wooden armoire with two drawers and a door. The armoire is made of a light-colored wood and has a smooth finish. It has two doors with a handle on the top"
-7,Wardrobes 19053,N/A,wardrobes_19053_image_7.jpg,"The image shows a white and blue sliding door with frosted glass panels, which is part of the IKEA Kallax sliding wardrobe collection."
-8,Wardrobes 19053,N/A,wardrobes_19053_image_8.jpg,"The image shows a white Sandusky Elite Series Storage Cabinet with a single door, measuring 36 inches wide, 18 inches deep, and 72 inches high."
-9,Wardrobes 19053,N/A,wardrobes_19053_image_9.jpg,"The image shows a black wardrobe with three doors and two drawers. The wardrobe is made of a sturdy material and has a sleek, modern design."
-10,Wardrobes 19053,N/A,wardrobes_19053_image_10.jpg,"The image shows a white Ikea Kallax wardrobe with two doors open, revealing shelves inside."
+ID,Type,Image_Path,Caption,Price
+1,Wardrobes 19053,wardrobes_19053_image_1.jpg,The image shows a white armoire with two doors and two drawers.,10995
+2,Wardrobes 19053,wardrobes_19053_image_2.jpg,"The image shows a white three-door wardrobe with three doors, perfect for storing clothes and other items. The wardrobe is made of a sturdy material and has a sleek, modern design. It has a glossy finish that reflects the light",11995
+3,Wardrobes 19053,wardrobes_19053_image_3.jpg,"The image shows a white armoire with two doors and two drawers. The armoire is part of the IKEA Malm collection and is perfect for storing clothes, shoes, and other items.",12795
+4,Wardrobes 19053,wardrobes_19053_image_4.jpg,"The image shows a white armoire with two doors and two drawers. The armoire is from Ikea and is perfect for storing clothes, shoes, and other items. It has a sleek and modern",6995
+5,Wardrobes 19053,wardrobes_19053_image_5.jpg,"The image shows a white three-door wardrobe with mirrored doors, perfect for storing clothes and other items. The wardrobe has a sleek and modern design, with a white finish. The doors are mirrored.",13695
+6,Wardrobes 19053,wardrobes_19053_image_6.jpg,The image shows a wooden armoire with two drawers and a door. The armoire is made of a light-colored wood and has a smooth finish. It has two doors with a handle on the top,14995
+7,Wardrobes 19053,wardrobes_19053_image_7.jpg,"The image shows a white and blue sliding door with frosted glass panels, which is part of the IKEA Kallax sliding wardrobe collection.",80700
+8,Wardrobes 19053,wardrobes_19053_image_8.jpg,"The image shows a white Sandusky Elite Series Storage Cabinet with a single door, measuring 36 inches wide, 18 inches deep, and 72 inches high.",5395
+9,Wardrobes 19053,wardrobes_19053_image_9.jpg,"The image shows a black wardrobe with three doors and two drawers. The wardrobe is made of a sturdy material and has a sleek, modern design.",13995
+10,Wardrobes 19053,wardrobes_19053_image_10.jpg,"The image shows a white Ikea Kallax wardrobe with two doors open, revealing shelves inside.",20020
