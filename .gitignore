@@ -11,6 +11,7 @@ Ikea Photos
 old Photos
 tmp_assets
 test_photos
+*.zip
 ##
 # Distribution / packaging
 .Python

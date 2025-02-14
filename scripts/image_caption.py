@@ -78,4 +78,6 @@ def gen():
 
 
 # gen()
-print(generate_caption("assets\\armchairs_16239\\armchairs_16239_image_1.jpg"))
+print(
+    generate_caption("assets\\sofas_armchairs_fu003\\sofas_armchairs_fu003_image_8.jpg")
+)

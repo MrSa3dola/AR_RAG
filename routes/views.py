@@ -8,7 +8,7 @@ from transformers import BlipForConditionalGeneration, BlipProcessor
 
 from gemini_api import extract_features_from_caption
 from recommendation import generate_caption, recommend
-from scripts.read_upload import get_similar
+from scripts.upload_retrieve import get_similar
 
 # Initialize router
 router = APIRouter()
