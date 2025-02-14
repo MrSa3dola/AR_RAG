@@ -5,38 +5,22 @@ from tools.pine_cone_tool import rag
 from tools.web_scraper import web_scraper
 
 chat_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=2000),
+    llm=LLM.llm(temperature=0, max_tokens=500),
     role="chat_agent",
     goal="Handle general conversation and non-furniture-related queries.",
     backstory="A friendly, knowledgeable chat agent for casual conversation.",
-    allow_delegation=True,
+    allow_delegation=False,
+    Memory=False,
     verbose=True,
 )
 
 chat_task = Task(
-    description="""Chat with the user about: {query} for example, say hello to the users and greet them. If they asked about the temprature you can answer. Act as a general chatbot""",
+    description="""Act as a general chatbot to answer {query}""",
     agent=chat_agent,
     expected_output="A friendly conversation response.",
 )
-
-rag_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=2000),
-    role="rag_agent",
-    goal="Use Pinecone to find furniture matching the user's query",
-    backstory="An expert in interior design and furniture recommendations",
-    tools=[rag],
-    allow_delegation=True,
-    verbose=True,
-)
-
-rag_task = Task(
-    description="""Find furniture matching: {query}""",
-    agent=rag_agent,
-    expected_output="A list of furniture items",
-)
-
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=2000),
+    llm=LLM.llm(temperature=0, max_tokens=500),
     role="scrap_agent",
     goal=(
         "analyze furniture_listings from amazon of egypt, comparing each product's "
@@ -49,15 +33,16 @@ scrap_agent = Agent(
         "and functionality to provide a tailored recommendation based on the provided criteria."
     ),
     tools=[web_scraper],
-    context=[rag_task],
-    allow_delegation=True,
+    # context=[rag_task],
+    allow_delegation=False,
     verbose=True,
 )
+
 scraper_task = Task(
     description=(
         "including dimensions, design details, material composition, and functionality. Compare these "
         "details against the following input criteria: {query} "
-        "and identify the top  best fit the description."
+        "and identify the top best fit the description."
         "if you don't found any product so say no furniture exist."
         "just show after the( ## Final Answer:) "
         "write just the results"
@@ -73,19 +58,47 @@ scraper_task = Task(
     ),
 )
 
+rag_agent = Agent(
+    llm=LLM.llm(temperature=0, max_tokens=500),
+    role="rag_agent",
+    goal="Use Pinecone to find furniture matching the user's query",
+    backstory="An expert in interior design and furniture recommendations",
+    tools=[rag],
+    # context=[chat_task],
+    subordinates=[scrap_agent],
+    allow_delegation=False,
+    verbose=True,
+)
+
+rag_task = Task(
+    description="""Find furniture matching: {query}""",
+    agent=rag_agent,
+    expected_output="A list of furniture items",
+)
+
+
 router_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=2000),
+    llm=LLM.llm(temperature=0, max_tokens=500),
     role="Router",
     goal="""
-        Your task is to analyze an incoming {query} and choose the single best specialized agent to delegate it to. You have three experts in your system:
-        • The rag_agent: excels at high-confidence vector retrieval of furniture recommendations using Pinecone. It returns a score for each recommendation. 
-        • The scrap_agent: specializes in dynamically extracting detailed product listings and specifications from online sources. 
-        • The chat_agent: handles all other conversational or non-furniture queries.
-        Evaluate the language, context, and intent of the query. 
-        If the query is furniture-related, first simulate running the rag_agent:
-        If the rag_agent returns one or more results with a high confidence score (e.g., above 0.7), select the rag_agent.
-        If the rag_agent's scores are low (e.g., below 0.7) or no high-confidence results are found, select the scrap_agent. 
-        If the query is not furniture-related or is purely conversational, choose the chat_agent.
+        Your task is to analyze an incoming {query} and choose the single best specialized agent to delegate it to. 
+        You must select exactly one agent for each query, with no subsequent fallbacks or additional processing.
+
+        You have three experts in your system:
+        - The rag_agent: excels at high-confidence vector retrieval of furniture recommendations using Pinecone. It returns a score for each recommendation.
+        - The scrap_agent: specializes in dynamically extracting detailed product listings and specifications from online sources.
+        - The chat_agent: handles all other conversational or non-furniture queries.
+
+        Follow this strict decision process:
+        1. Evaluate if the query is furniture-related or not.
+        2. For furniture-related queries:
+        - First check with the rag_agent
+        - If the rag_agent returns at least one result with a confidence score above 0.9, select ONLY the rag_agent and return its results.
+        - If all rag_agent results have scores below 0.9 or no results are found, select ONLY the scrap_agent and return its results.
+        3. For non-furniture-related or purely conversational queries:
+        - Select ONLY the chat_agent and return its response.
+
+        Important: Once you've selected an agent, do not attempt to use any other agents for the same query. Each query must be handled by exactly one agent, with no additional processing afterward.
     """,
     backstory="""
         You are the Manager Router, a highly perceptive and experienced decision-maker trained on vast amounts of specialized and general language data. 
@@ -104,7 +117,7 @@ router_task = Task(
         Ask yourself:
           - Is this query specifically about furniture or interior design?
           - If so, simulate running the rag_agent:
-              • If the rag_agent returns one or more results with high confidence (e.g., any result with a score ≥ 0.7),
+              • If the rag_agent returns one or more results with high confidence (e.g., any result with a score ≥ 0.9),
                 choose "rag_agent".
               • Otherwise, if the rag_agent's scores are low or no high-confidence results are found, choose "scrap_agent".
           - If the query is not furniture-related or is purely conversational,
@@ -118,16 +131,20 @@ router_task = Task(
 
 crew = Crew(
     # manager_llm=LLM.llm(temperature=0),
-    manager_agent=router_agent,
-    agents=[chat_agent, rag_agent, scrap_agent],
-    tasks=[chat_task, rag_task, scraper_task],
+    # manager_agent=router_agent,
+    agents=[
+        rag_agent,
+        chat_agent,
+        scrap_agent,
+    ],
+    tasks=[rag_task, chat_task, scraper_task],
     # memory=True,
-    process=Process.hierarchical,
+    # process=Process.hierarchical,
 )
-query = "hello"
-inputs = {"query": query}
-result = crew.kickoff(inputs=inputs)
-print(result)
+# query = "hello, how are you"
+# inputs = {"query": query}
+# result = crew.kickoff(inputs=inputs)
+# print(result)
 # while True:
 
 # Your response must be a single string naming the best agent from the list: 'Furniture RAG Agent', 'Web Scraping Agent', or 'General Chat Agent'. Do not include any extra commentary—simply return the chosen agent’s name.

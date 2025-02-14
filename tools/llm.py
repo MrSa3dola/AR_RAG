@@ -7,7 +7,7 @@ class LLM:
     @staticmethod
     def llm(temperature=0.5, max_tokens=1000):
         """Returns configured Gemini LLM instance"""
-        api_key = os.getenv("GEMINI_API_KEY")
+        api_key = os.getenv("GEMENI_API_KEY_2")
         if not api_key:
             raise ValueError("Missing GEMINI_API_KEY environment variable")
 
