@@ -76,14 +76,14 @@ def extract_features_from_caption(caption):
 # caption1 = "The image shows a bed with a grey upholstered headboard and metal legs, and a white mattress on top of it. The bed frame is made of a sturdy metal frame, and the headboard is upholstery"
 # caption2 = "The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. It has a modern design with clean lines and a comfortable seating area, making it a great addition"
 # caption3 = "The image shows a black recliner chair. The chair has a sleek and modern design, with a comfortable cushion and armrests. It is upholstered in a soft black fabric, giving it a luxurious look"
-caption4 = "hello, I wnat you to recommend me a beautiful sofa for my house and it's color black"
+# caption4 = "hello, I wnat you to recommend me a beautiful sofa for my house and it's color black"
 
 # output1 = extract_features_from_caption(caption1)
 # output2 = extract_features_from_caption(caption2)
 # output3 = extract_features_from_caption(caption3)
-output4 = extract_features_from_caption(caption4)
+# output4 = extract_features_from_caption(caption4)
 
 # print(f"{output1}")
 # print(f"{output2}")
 # print(f"{output3}")
-print(f"{output4}")
+# print(f"{output4}")
