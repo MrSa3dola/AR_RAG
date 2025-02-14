@@ -4,6 +4,7 @@ from typing import Any, Dict
 
 from crewai import Agent, Crew, Process, Task
 
+from llm_utils import extract_features_from_caption, is_furniture_related
 from tools.llm import LLM
 from tools.pine_cone_tool import rag
 from tools.web_scraper import web_scraper
@@ -116,29 +117,31 @@ def extract_final_answer(scraper_result: str) -> str:
         return str(scraper_result)
 
 
-def is_furniture_related(query: str) -> bool:
-    """Check if a query is related to furniture"""
-    furniture_keywords = [
-        "sofa",
-        "chair",
-        "table",
-        "desk",
-        "bed",
-        "furniture",
-        "couch",
-        "dresser",
-        "cabinet",
-        "shelf",
-        "bookcase",
-        "ottoman",
-        "armchair",
-        "recliner",
-        "loveseat",
-        "sectional",
-        "nightstand",
-        "wardrobe",
-    ]
-    return any(keyword in query.lower() for keyword in furniture_keywords)
+# def is_furniture_related(query: str) -> bool:
+#     """Check if a query is related to furniture"""
+
+#     furniture_keywords = [
+#         "sofa",
+#         "chair",
+#         "table",
+#         "desk",
+#         "bed",
+#         "furniture",
+#         "couch",
+#         "dresser",
+#         "cabinet",
+#         "shelf",
+#         "bookcase",
+#         "ottoman",
+#         "armchair",
+#         "recliner",
+#         "loveseat",
+#         "sectional",
+#         "nightstand",
+#         "wardrobe",
+#     ]
+
+#     return any(keyword in query.lower() for keyword in furniture_keywords)
 
 
 def process_query(query: str) -> str:
@@ -146,18 +149,17 @@ def process_query(query: str) -> str:
     Process a user query through the router system and return the appropriate response.
     """
     # First check if it's furniture related
-    if is_furniture_related(query):
+    if is_furniture_related(query) == "TRUE":
         # Check RAG scores first
+        extracted_query = extract_features_from_caption(query)
         rag_check_task = Task(
-            description=f"Search for furniture matching: {query}\nReturn raw results with confidence scores.",
+            description=f"Search for furniture matching: {extracted_query}\nReturn raw results with confidence scores.",
             agent=rag_agent,
             expected_output="Raw search results with scores",
         )
 
         # Get RAG results
-        rag_result = rag_agent.execute_task(
-            rag_check_task, context={}, inputs={"query": query}
-        )
+        rag_result = rag_agent.execute_task(rag_check_task, context={})
 
         # Try to parse the result for scores
         try:
@@ -168,28 +170,26 @@ def process_query(query: str) -> str:
             has_high_confidence = False
             if scores:
                 scores = [float(s) for s in scores]
-                has_high_confidence = any(score >= 0.7 for score in scores)
+                has_high_confidence = any(score >= 0.9 for score in scores)
 
             if has_high_confidence:
                 # Use RAG agent for final result
                 rag_final_task = Task(
                     description=f"""
-                        Find furniture matching: {query}
+                        Find furniture matching: {extracted_query}
                         Format each result with description, price, and confidence score.
-                        Only include results with score >= 0.7
+                        Only include results with score >= 0.9
                     """,
                     agent=rag_agent,
                     expected_output="Formatted furniture recommendations",
                 )
-                final_result = rag_agent.execute_task(
-                    rag_final_task, context={}, inputs={"query": query}
-                )
+                final_result = rag_agent.execute_task(rag_final_task, context={})
                 return format_rag_output(final_result)
             else:
                 # Use Scraper agent
                 scraper_task = Task(
                     description=f"""
-                        Search online for furniture matching: {query}
+                        Search online for furniture matching: {extracted_query}
                         Find detailed specifications including dimensions, materials, and pricing.
                         Compile the best 2-3 matches with full details and direct links.
                         
@@ -199,16 +199,14 @@ def process_query(query: str) -> str:
                     agent=scrap_agent,
                     expected_output="Detailed furniture listings with specifications",
                 )
-                final_result = scrap_agent.execute_task(
-                    scraper_task, context={}, inputs={"query": query}
-                )
+                final_result = scrap_agent.execute_task(scraper_task, context={})
                 return extract_final_answer(final_result)
 
         except Exception as e:
             # Fallback to scraper if parsing fails
             scraper_task = Task(
                 description=f"""
-                    Search online for furniture matching: {query}
+                    Search online for furniture matching: {extracted_query}
                     Find detailed specifications including dimensions, materials, and pricing.
                     Compile the best 2-3 matches with full details and direct links.
                     
@@ -218,9 +216,7 @@ def process_query(query: str) -> str:
                 agent=scrap_agent,
                 expected_output="Detailed furniture listings with specifications",
             )
-            final_result = scrap_agent.execute_task(
-                scraper_task, context={}, inputs={"query": query}
-            )
+            final_result = scrap_agent.execute_task(scraper_task, context={})
             return extract_final_answer(final_result)
     else:
         # Use chat agent for non-furniture queries
@@ -229,9 +225,7 @@ def process_query(query: str) -> str:
             agent=chat_agent,
             expected_output="A conversational, informative response",
         )
-        final_result = chat_agent.execute_task(
-            chat_task, context={}, inputs={"query": query}
-        )
+        final_result = chat_agent.execute_task(chat_task, context={})
         return str(final_result)
 
 
@@ -244,7 +238,7 @@ def handle_query(query: str) -> str:
 # Example usage
 if __name__ == "__main__":
     # Test with example query
-    query = "I'm looking for a light blue sofa that would fit in my small apartment"
+    query = "hello, recommend me a beautiful light blue sofa"
     result = handle_query(query)
     print("Final Result:")
     print(result)

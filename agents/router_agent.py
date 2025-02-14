@@ -1,8 +1,11 @@
 from crewai import Agent, Crew, Process, Task
+from langchain_openai import ChatOpenAI
 
 from tools.llm import LLM
 from tools.pine_cone_tool import rag
 from tools.web_scraper import web_scraper
+
+OpenAIGPT4 = ChatOpenAI(model="gpt-4")
 
 chat_agent = Agent(
     llm=LLM.llm(temperature=0, max_tokens=500),
@@ -11,6 +14,7 @@ chat_agent = Agent(
     backstory="A friendly, knowledgeable chat agent for casual conversation.",
     allow_delegation=False,
     Memory=False,
+    # max_iter=1,
     verbose=True,
 )
 
@@ -19,6 +23,7 @@ chat_task = Task(
     agent=chat_agent,
     expected_output="A friendly conversation response.",
 )
+
 scrap_agent = Agent(
     llm=LLM.llm(temperature=0, max_tokens=500),
     role="scrap_agent",
@@ -35,6 +40,7 @@ scrap_agent = Agent(
     tools=[web_scraper],
     # context=[rag_task],
     allow_delegation=False,
+    # max_iter=1,
     verbose=True,
 )
 
@@ -67,6 +73,7 @@ rag_agent = Agent(
     # context=[chat_task],
     subordinates=[scrap_agent],
     allow_delegation=False,
+    # max_iter=1,
     verbose=True,
 )
 
@@ -78,7 +85,8 @@ rag_task = Task(
 
 
 router_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=500),
+    # llm=LLM.llm(temperature=0, max_tokens=500),
+    llm=OpenAIGPT4,
     role="Router",
     goal="""
         Your task is to analyze an incoming {query} and choose the single best specialized agent to delegate it to. 
@@ -108,6 +116,7 @@ router_agent = Agent(
     """,
     verbose=True,
     allow_delegation=True,
+    # max_iter=1,
     # allowed_agents=["chat_agent", "rag_agent", "scrap_agent"],
 )
 
@@ -117,34 +126,40 @@ router_task = Task(
         Ask yourself:
           - Is this query specifically about furniture or interior design?
           - If so, simulate running the rag_agent:
-              • If the rag_agent returns one or more results with high confidence (e.g., any result with a score ≥ 0.9),
+              • If the rag_agent returns one or more results with high confidence above 0.9,
                 choose "rag_agent".
               • Otherwise, if the rag_agent's scores are low or no high-confidence results are found, choose "scrap_agent".
           - If the query is not furniture-related or is purely conversational,
             choose "chat_agent".
-        Return exactly one of the following strings: "rag_agent", "scrap_agent", or "chat_agent".
+        Return the final answer from the selected Agent ONLY and stop the process.
     """,
     agent=router_agent,
-    expected_output="One of the strings: rag_agent, scrap_agent, or chat_agent",
+    expected_output="""
+    one of the following outputs
+    - rag agent: list of furniture items
+    - chat agent: casual conversation
+    - web scrap agent: list of items urls
+    """,
 )
 
 
 crew = Crew(
     # manager_llm=LLM.llm(temperature=0),
-    # manager_agent=router_agent,
+    # manager_llm=OpenAIGPT4,
+    manager_agent=router_agent,
     agents=[
-        rag_agent,
         chat_agent,
+        rag_agent,
         scrap_agent,
     ],
-    tasks=[rag_task, chat_task, scraper_task],
+    tasks=[router_task, chat_task, rag_task, scraper_task],
     # memory=True,
-    # process=Process.hierarchical,
+    process=Process.hierarchical,
 )
-# query = "hello, how are you"
-# inputs = {"query": query}
-# result = crew.kickoff(inputs=inputs)
-# print(result)
+query = "light blue sofa"
+inputs = {"query": query}
+result = crew.kickoff(inputs=inputs)
+print(result)
 # while True:
 
 # Your response must be a single string naming the best agent from the list: 'Furniture RAG Agent', 'Web Scraping Agent', or 'General Chat Agent'. Do not include any extra commentary—simply return the chosen agent’s name.

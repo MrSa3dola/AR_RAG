@@ -6,7 +6,7 @@ from PIL import Image
 from pydantic import BaseModel
 from transformers import BlipForConditionalGeneration, BlipProcessor
 
-from gemini_api import extract_features_from_caption
+from llm_utils import extract_features_from_caption
 from recommendation import generate_caption, recommend
 from scripts.upload_retrieve import get_similar
 

@@ -1,4 +1,3 @@
-# Add to pine_cone_tool.py or create new scraping_tool.py
 import os
 
 from crewai.tools import tool

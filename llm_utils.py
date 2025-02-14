@@ -72,6 +72,47 @@ def extract_features_from_caption(caption):
         return None
 
 
+def is_furniture_related(query):
+    llm = LLM(
+        model="gemini/gemini-2.0-flash",  # Replace with the correct model name
+        api_key=os.getenv("GEMENI_API_KEY_2"),
+    )
+
+    try:
+        prompt = f"""
+        Given a user question, analyze the content to determine if it relates to furniture.
+        Return TRUE if the question involves:
+        - Specific furniture items (chairs, tables, sofas, beds, etc.)
+        - Furniture materials (wood, upholstery, metal frames, etc.)
+        - Furniture design, layout, or arrangement
+        - Furniture shopping, pricing, or brands
+        - Furniture care, maintenance, or repair
+        - Furniture manufacturing or production
+        - Furniture history or styles
+
+        Return FALSE if the question is unrelated to furniture.
+
+        Examples:
+        "What's a good sofa for a small apartment?" -> TRUE
+        "How do I remove a coffee stain from my couch?" -> TRUE
+        "What are some mid-century modern furniture designers?" -> TRUE
+        "How tall should a dining table be?" -> TRUE
+
+        "What's the weather like today?" -> FALSE
+        "Can you help me with my math homework?" -> FALSE
+        "What's a good recipe for lasagna?" -> FALSE
+        "How do I train my dog?" -> FALSE
+
+        User question: {query}
+        """
+        # Assuming the LLM has a method called `call` or `process`
+        result = llm.call(prompt)  # Replace `call` with the actual method name
+        return result.strip()
+    except Exception as e:
+        print(f"Error during task execution: {e}")
+        return None
+
+
 # Example usage
 # caption1 = "The image shows a bed with a grey upholstered headboard and metal legs, and a white mattress on top of it. The bed frame is made of a sturdy metal frame, and the headboard is upholstery"
 # caption2 = "The image shows a black and white sectional sofa with a chaise lounger, perfect for relaxing and unwinding after a long day. It has a modern design with clean lines and a comfortable seating area, making it a great addition"
