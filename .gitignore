@@ -6,6 +6,7 @@ llama
 # C extensions
 *.so
 ##
+assets/
 Ikea Photos
 old Photos
 tmp_assets
