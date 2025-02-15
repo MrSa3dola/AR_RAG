@@ -30,7 +30,7 @@ rag_agent = Agent(
 
 # Create web scraping agent for dynamic furniture search
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=1000),
+    llm=LLM.llm(temperature=0, max_tokens=2000),
     role="Furniture Research Agent",
     goal="Find detailed furniture specifications by searching online marketplaces",
     backstory="A meticulous researcher who can find specific furniture items and their details online",
@@ -80,20 +80,20 @@ def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
                 if isinstance(item, dict):
                     caption = item.get("caption", "Unknown item")
                     price = item.get("price", "Price not available")
-                    score = item.get("score", "N/A")
+                    # score = item.get("score", "N/A")
                     image_path = item.get("image_path", "Image not available")
                     output += f"- {caption}\n"
                     if isinstance(price, (int, float)):
                         output += f"  Price: ${price:.2f}\n"
                     else:
                         output += f"  Price: {price}\n"
-                    output += f"  Match score: {score}\n\n"
+                    # output += f"  Match score: {score}\n\n"
                     # Append the new dictionary to the list
                     items_list.append(
                         {
                             "image_path": image_path,
-                            "caption": caption,
-                            "price": price,
+                            # "caption": caption,
+                            # "price": price,
                         }
                     )
                 else:
@@ -104,7 +104,7 @@ def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
         elif isinstance(data, dict):
             caption = data.get("caption", "Unknown item")
             price = data.get("price", "Price not available")
-            score = data.get("score", "N/A")
+            # score = data.get("score", "N/A")
             image_path = data.get("image_path", "Image not available")
             output = "I found this furniture item for you:\n\n"
             output += f"- {caption}\n"
@@ -112,12 +112,12 @@ def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
                 output += f"  Price: EGP{price:.2f}\n"
             else:
                 output += f"  Price: {price}\n"
-            output += f"  Match score: {score}\n"
+            # output += f"  Match score: {score}\n"
             items_list.append(
                 {
                     "image_path": image_path,
-                    "caption": caption,
-                    "price": price,
+                    # "caption": caption,
+                    # "price": price,
                 }
             )
             items_list.append(output)

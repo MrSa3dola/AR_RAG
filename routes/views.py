@@ -88,9 +88,9 @@ async def create_upload_file(file: UploadFile = File(...)):
     return JSONResponse(content={"recommendation": recommendation})
 
 
-@router.get("/recommend/history")
-async def get_recommendation_history():
-    return {"history": recommendation_history}
+# @router.get("/recommend/history")
+# async def get_recommendation_history():
+#     return {"history": recommendation_history}
 
 
 @router.post("/my-chat/")
@@ -100,19 +100,19 @@ async def chat_endpoint(request: MessageRequest):
     return JSONResponse(content={"response": response})
 
 
-@router.post("/stream/my-chat/")
-async def stream_chat(request: MessageRequest):
-    """
-    Live streaming chat endpoint.
-    The full response from handle_query is tokenized and streamed.
-    """
-    query = request.text
-    full_response = handle_query(query)
+# @router.post("/stream/my-chat/")
+# async def stream_chat(request: MessageRequest):
+#     """
+#     Live streaming chat endpoint.
+#     The full response from handle_query is tokenized and streamed.
+#     """
+#     query = request.text
+#     full_response = handle_query(query)
 
-    async def event_generator(response_text: str):
-        # Split response into tokens (words) and stream with a slight delay
-        for word in response_text.split():
-            yield word + " "
-            await asyncio.sleep(0.1)  # Adjust delay to control streaming pace
+#     async def event_generator(response_text: str):
+#         # Split response into tokens (words) and stream with a slight delay
+#         for word in response_text.split():
+#             yield word + " "
+#             await asyncio.sleep(0.1)  # Adjust delay to control streaming pace
 
-    return StreamingResponse(event_generator(full_response), media_type="text/plain")
+#     return StreamingResponse(event_generator(full_response), media_type="text/plain")
