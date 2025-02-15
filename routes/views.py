@@ -93,14 +93,14 @@ async def get_recommendation_history():
     return {"history": recommendation_history}
 
 
-@router.post("/chat/")
+@router.post("/my-chat/")
 async def chat_endpoint(request: MessageRequest):
     query = request.text
     response = handle_query(query)
     return JSONResponse(content={"response": response})
 
 
-@router.post("/stream/chat/")
+@router.post("/stream/my-chat/")
 async def stream_chat(request: MessageRequest):
     """
     Live streaming chat endpoint.
