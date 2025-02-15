@@ -43,7 +43,7 @@ def rag(query: str) -> list:
     model = load_model()
     query_vector = model.encode(query).tolist()
 
-    results = index.query(vector=query_vector, top_k=2, include_metadata=True)
+    results = index.query(vector=query_vector, top_k=3, include_metadata=True)
     return [
         {
             "image_path": match["metadata"].get("image_path", "N/A"),
@@ -52,4 +52,5 @@ def rag(query: str) -> list:
             "price": match["metadata"].get("price", "N/A"),
         }
         for match in results.get("matches", [])
+        if match["score"] >= 0.9
     ]

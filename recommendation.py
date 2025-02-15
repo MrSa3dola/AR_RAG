@@ -1,6 +1,8 @@
+import io
 import os
 
 import google.generativeai as genai
+from PIL import Image
 from transformers import BlipForConditionalGeneration, BlipProcessor
 
 # Initialize the models and configurations
@@ -38,11 +40,36 @@ def get_the_item_name(item):
     return response.text.strip()
 
 
-
-
 def recommend(furniture_items, room_color, prev_items):
     prompt = prompt_template(furniture_items, room_color, prev_items)
     response = llm_model.generate_content(prompt)
     recommendation = response.text.strip()
     prev_items.append(get_the_item_name(recommendation))
     return recommendation
+
+
+def compress_image(image, max_size_mb=1, quality=85):
+
+    # Convert image to RGB if it's not
+    if image.mode != "RGB":
+        image = image.convert("RGB")
+
+    # Resize the image to reduce dimensions
+    max_dimension = 1024  # Adjust this value as needed
+    image.thumbnail((max_dimension, max_dimension), Image.Resampling.LANCZOS)
+
+    # Compress the image by reducing quality
+    output = io.BytesIO()
+    image.save(output, format="JPEG", quality=quality)
+
+    # Check the size of the compressed image
+    while output.tell() > max_size_mb * 1024 * 1024 and quality > 10:
+        quality -= 5
+        output = io.BytesIO()
+        image.save(output, format="JPEG", quality=quality)
+
+    # Reset the stream position to the beginning
+    output.seek(0)
+
+    # Return the compressed image as a PIL.Image object
+    return Image.open(output)

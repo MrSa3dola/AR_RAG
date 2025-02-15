@@ -1,6 +1,6 @@
 import json
 import re
-from typing import Any, Dict
+from typing import Any, Dict, List, Tuple
 
 from crewai import Agent, Crew, Process, Task
 
@@ -30,7 +30,7 @@ rag_agent = Agent(
 
 # Create web scraping agent for dynamic furniture search
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=500),
+    llm=LLM.llm(temperature=0, max_tokens=1000),
     role="Furniture Research Agent",
     goal="Find detailed furniture specifications by searching online marketplaces",
     backstory="A meticulous researcher who can find specific furniture items and their details online",
@@ -52,21 +52,24 @@ router_agent = Agent(
 )
 
 
-def format_rag_output(rag_result: Any) -> str:
-    """Format the RAG output to be more user-friendly"""
+def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
+    """
+    Format the RAG output to be more user-friendly and extract a list of items,
+    each containing 'image_path', 'caption', and 'price'.
+    """
+    items_list = []
     try:
+        # Try to convert string input to data structure
         if isinstance(rag_result, str):
-            # Try to parse if it's a string representation of dict/list
             try:
                 data = json.loads(rag_result.replace("'", '"'))
-            except:
-                # If it's not valid JSON, try to evaluate it as a Python literal
+            except Exception:
                 try:
                     import ast
 
                     data = ast.literal_eval(rag_result)
-                except:
-                    # If that fails too, return as is
+                except Exception:
+                    items_list.append(rag_result)
                     return rag_result
         else:
             data = rag_result
@@ -78,32 +81,55 @@ def format_rag_output(rag_result: Any) -> str:
                     caption = item.get("caption", "Unknown item")
                     price = item.get("price", "Price not available")
                     score = item.get("score", "N/A")
+                    image_path = item.get("image_path", "Image not available")
                     output += f"- {caption}\n"
                     if isinstance(price, (int, float)):
                         output += f"  Price: ${price:.2f}\n"
                     else:
                         output += f"  Price: {price}\n"
                     output += f"  Match score: {score}\n\n"
+                    # Append the new dictionary to the list
+                    items_list.append(
+                        {
+                            "image_path": image_path,
+                            "caption": caption,
+                            "price": price,
+                        }
+                    )
                 else:
                     output += f"- {item}\n"
-            return output
+            items_list.append(output)
+            return items_list
+
         elif isinstance(data, dict):
             caption = data.get("caption", "Unknown item")
             price = data.get("price", "Price not available")
             score = data.get("score", "N/A")
-            output = f"I found this furniture item for you:\n\n"
+            image_path = data.get("image_path", "Image not available")
+            output = "I found this furniture item for you:\n\n"
             output += f"- {caption}\n"
             if isinstance(price, (int, float)):
-                output += f"  Price: ${price:.2f}\n"
+                output += f"  Price: EGP{price:.2f}\n"
             else:
                 output += f"  Price: {price}\n"
             output += f"  Match score: {score}\n"
-            return output
+            items_list.append(
+                {
+                    "image_path": image_path,
+                    "caption": caption,
+                    "price": price,
+                }
+            )
+            items_list.append(output)
+            return items_list
+
         else:
-            return str(rag_result)
-    except:
-        # If anything goes wrong, return the original
-        return str(rag_result)
+            items_list.append(str(rag_result))
+            return items_list
+
+    except Exception:
+        items_list.append(str(rag_result))
+        return items_list
 
 
 def extract_final_answer(scraper_result: str) -> str:
@@ -238,7 +264,7 @@ def handle_query(query: str) -> str:
 # Example usage
 if __name__ == "__main__":
     # Test with example query
-    query = "hello, recommend me a beautiful light blue sofa"
+    query = "hello"
     result = handle_query(query)
     print("Final Result:")
     print(result)
