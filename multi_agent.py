@@ -143,33 +143,6 @@ def extract_final_answer(scraper_result: str) -> str:
         return str(scraper_result)
 
 
-# def is_furniture_related(query: str) -> bool:
-#     """Check if a query is related to furniture"""
-
-#     furniture_keywords = [
-#         "sofa",
-#         "chair",
-#         "table",
-#         "desk",
-#         "bed",
-#         "furniture",
-#         "couch",
-#         "dresser",
-#         "cabinet",
-#         "shelf",
-#         "bookcase",
-#         "ottoman",
-#         "armchair",
-#         "recliner",
-#         "loveseat",
-#         "sectional",
-#         "nightstand",
-#         "wardrobe",
-#     ]
-
-#     return any(keyword in query.lower() for keyword in furniture_keywords)
-
-
 def process_query(query: str) -> str:
     """
     Process a user query through the router system and return the appropriate response.
@@ -252,7 +225,10 @@ def process_query(query: str) -> str:
             expected_output="A conversational, informative response",
         )
         final_result = chat_agent.execute_task(chat_task, context={})
-        return str(final_result)
+        res = str(final_result)
+        g = []
+        g.append(res)
+        return g
 
 
 # Main entry point for handling queries
