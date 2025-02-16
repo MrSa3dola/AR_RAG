@@ -12,7 +12,7 @@ class LLM:
             raise ValueError("Missing GEMINI_API_KEY environment variable")
 
         return ChatOpenAI(
-            model_name="gpt-4",
+            model_name="gpt-3.5-turbo",
             temperature=temperature,
             openai_api_key=api_key,
             max_tokens=max_tokens,
