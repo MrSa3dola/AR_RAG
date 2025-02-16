@@ -149,7 +149,7 @@ def extract_final_answer(scraper_result: str) -> str:
     if match:
         return match.group(1).strip()
     else:
-        return str(scraper_result)
+        return [str(scraper_result)]
 
 
 def process_query(query: str) -> str:
