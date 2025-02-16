@@ -52,6 +52,17 @@ router_agent = Agent(
 )
 
 
+import json
+import os
+from typing import Any, Dict, List, Tuple
+
+
+def extract_folder_and_format_path(filename: str) -> str:
+    """Extract the folder name from the filename and return the full path."""
+    folder_name = filename.rsplit("_image_", 1)[0]
+    return f"{folder_name}/{filename}"
+
+
 def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
     """
     Format the RAG output to be more user-friendly and extract a list of items,
@@ -59,7 +70,6 @@ def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
     """
     items_list = []
     try:
-        # Try to convert string input to data structure
         if isinstance(rag_result, str):
             try:
                 data = json.loads(rag_result.replace("'", '"'))
@@ -80,46 +90,45 @@ def format_rag_output(rag_result: Any) -> Tuple[str, List[Dict[str, Any]]]:
                 if isinstance(item, dict):
                     caption = item.get("caption", "Unknown item")
                     price = item.get("price", "Price not available")
-                    # score = item.get("score", "N/A")
                     image_path = item.get("image_path", "Image not available")
+
+                    # Extract folder and update the image path
+                    if image_path != "Image not available":
+                        image_path = extract_folder_and_format_path(image_path)
+
                     output += f"- {caption}\n"
-                    if isinstance(price, (int, float)):
-                        output += f"  Price: ${price:.2f}\n"
-                    else:
-                        output += f"  Price: {price}\n"
-                    # output += f"  Match score: {score}\n\n"
-                    # Append the new dictionary to the list
-                    items_list.append(
-                        {
-                            "image_path": image_path,
-                            # "caption": caption,
-                            # "price": price,
-                        }
+                    output += (
+                        f"  Price: {price:.2f}\n"
+                        if isinstance(price, (int, float))
+                        else f"  Price: {price}\n"
                     )
+
+                    items_list.append({"image_path": image_path})
+
                 else:
                     output += f"- {item}\n"
+
             items_list.append(output)
             return items_list
 
         elif isinstance(data, dict):
             caption = data.get("caption", "Unknown item")
             price = data.get("price", "Price not available")
-            # score = data.get("score", "N/A")
             image_path = data.get("image_path", "Image not available")
+
+            # Extract folder and update the image path
+            if image_path != "Image not available":
+                image_path = extract_folder_and_format_path(image_path)
+
             output = "I found this furniture item for you:\n\n"
             output += f"- {caption}\n"
-            if isinstance(price, (int, float)):
-                output += f"  Price: EGP{price:.2f}\n"
-            else:
-                output += f"  Price: {price}\n"
-            # output += f"  Match score: {score}\n"
-            items_list.append(
-                {
-                    "image_path": image_path,
-                    # "caption": caption,
-                    # "price": price,
-                }
+            output += (
+                f"  Price: {price:.2f}\n"
+                if isinstance(price, (int, float))
+                else f"  Price: {price}\n"
             )
+
+            items_list.append({"image_path": image_path})
             items_list.append(output)
             return items_list
 
