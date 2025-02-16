@@ -30,7 +30,7 @@ rag_agent = Agent(
 
 # Create web scraping agent for dynamic furniture search
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=2000),
+    llm=LLM.llm(temperature=0, max_tokens=1000),
     role="Furniture Research Agent",
     goal="Find detailed furniture specifications by searching online marketplaces",
     backstory="A meticulous researcher who can find specific furniture items and their details online",
