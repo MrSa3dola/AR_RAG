@@ -142,7 +142,6 @@ def get_similar(question, top_k=2):
             "price": match.metadata.get("price", "N/A"),
         }
         for match in results.matches
-        if match.score >= 0.9
     ]
 
 
