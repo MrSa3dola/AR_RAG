@@ -30,7 +30,7 @@ rag_agent = Agent(
 
 # Create web scraping agent for dynamic furniture search
 scrap_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=1000),
+    llm=LLM.llm(temperature=0, max_tokens=600),
     role="Furniture Research Agent",
     goal="Find detailed furniture specifications by searching online marketplaces",
     backstory="A meticulous researcher who can find specific furniture items and their details online",
@@ -39,17 +39,17 @@ scrap_agent = Agent(
 )
 
 # Create the router agent
-router_agent = Agent(
-    llm=LLM.llm(temperature=0, max_tokens=500),
-    role="Query Router",
-    goal="Direct each query to the most appropriate specialized agent",
-    backstory="""
-        An intelligent coordinator that analyzes user queries and delegates to the right specialist.
-        Furniture-related queries go to RAG or web scraping agents, while general conversation 
-        goes to the chat agent.
-    """,
-    verbose=True,
-)
+# router_agent = Agent(
+#     llm=LLM.llm(temperature=0, max_tokens=500),
+#     role="Query Router",
+#     goal="Direct each query to the most appropriate specialized agent",
+#     backstory="""
+#         An intelligent coordinator that analyzes user queries and delegates to the right specialist.
+#         Furniture-related queries go to RAG or web scraping agents, while general conversation
+#         goes to the chat agent.
+#     """,
+#     verbose=True,
+# )
 
 
 import json
@@ -183,11 +183,8 @@ def process_query(query: str) -> str:
             if has_high_confidence:
                 # Use RAG agent for final result
                 rag_final_task = Task(
-                    description=f"""
-                        Find furniture matching: {extracted_query}
-                        Format each result with description, price, and confidence score.
-                        Only include results with score >= 0.9
-                    """,
+                    description=f"""Find furniture matching: {extracted_query}Format each result with description, price, and confidence score.
+Only include results with score >= 0.9""",
                     agent=rag_agent,
                     expected_output="Formatted furniture recommendations",
                 )
@@ -196,14 +193,11 @@ def process_query(query: str) -> str:
             else:
                 # Use Scraper agent
                 scraper_task = Task(
-                    description=f"""
-                        Search online for furniture matching: {extracted_query}
-                        Find detailed specifications including dimensions, materials, and pricing.
-                        Compile the best matches with full details and direct links.
-                        
-                        ## Final Answer:
-                        [product names  with links]
-                    """,
+                    description=f"""Search online for furniture matching: {extracted_query}
+Find details including item name, and pricing.
+Compile the best matches with full details and direct links.
+## Final Answer:
+[product names with urls]""",
                     agent=scrap_agent,
                     expected_output="Detailed furniture listings with specifications",
                 )
@@ -213,14 +207,11 @@ def process_query(query: str) -> str:
         except Exception as e:
             # Fallback to scraper if parsing fails
             scraper_task = Task(
-                description=f"""
-                    Search online for furniture matching: {extracted_query}
-                    Find detailed specifications including dimensions, materials, and pricing.
-                    Compile the best 2-3 matches with full details and direct links.
-                    
-                    ## Final Answer:
-                    [Full product descriptions with links]
-                """,
+                description=f"""Search online for furniture matching: {extracted_query}
+Find details including item name, and pricing.
+Compile the best matches with full details and direct links.
+## Final Answer:
+[product names with urls]""",
                 agent=scrap_agent,
                 expected_output="Detailed furniture listings with specifications",
             )
