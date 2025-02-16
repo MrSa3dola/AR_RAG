@@ -199,10 +199,10 @@ def process_query(query: str) -> str:
                     description=f"""
                         Search online for furniture matching: {extracted_query}
                         Find detailed specifications including dimensions, materials, and pricing.
-                        Compile the best 2-3 matches with full details and direct links.
+                        Compile the best matches with full details and direct links.
                         
                         ## Final Answer:
-                        [Full product descriptions with links]
+                        [product names  with links]
                     """,
                     agent=scrap_agent,
                     expected_output="Detailed furniture listings with specifications",
