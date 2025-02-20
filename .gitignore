@@ -13,7 +13,6 @@ old Photos
 tmp_assets
 test_photos
 *.zip
-*.jpg
 *.apk
 ##
 # Distribution / packaging
