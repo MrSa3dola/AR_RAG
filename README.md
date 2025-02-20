@@ -1,31 +1,19 @@
-# AR_RAG
-## Progress: currently working on it and due to our limited quota in Azure, **I will close the server on 25/2/2026**
-
-## [Frontend repo](https://github.com/MohamedREDA-24/AR_APP)
-## [APK Link](https://drive.google.com/drive/folders/1B5peiR1DMgpQquF19WnsrTn-BOL5U8ss?usp=drive_link)
-## [Demo Link](https://drive.google.com/file/d/1uHvKp35EkJaHpnmUyHCeTQzPx6RouVmV/view?usp=drive_link)
 <a id="readme-top"></a>
 
 <!-- PROJECT LOGO -->
-<br />
 <div align="center">
   <a href="https://github.com/MrSa3dola/AR_RAG/blob/main/README.md">
-    <img src="images/Ablakash.png" alt="Logo" width="80" height="80">
+    <img src="images/Ablakash.svg" alt="Logo" width="300" height="300">
   </a>
 
-  <h3 align="center">README</h3>
+  <!-- <h3 align="center">README</h3> -->
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
+    <!-- <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    &middot;
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <br />  -->
+    <a href="https://drive.google.com/file/d/1uHvKp35EkJaHpnmUyHCeTQzPx6RouVmV/view?usp=drive_link">View Demo</a>
+    <!-- &middot;  -->
   </p>
 </div>
 
@@ -48,13 +36,10 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <!-- <li><a href="#usage">Usage</a></li> -->
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
+   </ol>
 </details>
 
 
@@ -62,7 +47,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Ablakash screenshot][product-screenshot]](images/Screenshot.jpg)
 
 There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
 
