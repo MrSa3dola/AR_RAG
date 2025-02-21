@@ -1,16 +1,4 @@
 <a id="readme-top"></a>
-## Demo Video
-
-<div align="center">
-  <iframe width="560" height="315" 
-    src="https://www.youtube.com/embed/1jX8XyYvtWs?si=XwBFWwnloh6JJzjU" 
-    title="Demo Video" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-    allowfullscreen>
-  </iframe>
-</div>
-
 <div align="center">
 
 </div>
@@ -21,7 +9,7 @@
     <img src="images/Ablakash.svg" alt="Logo" width="300" height="300">
   </a>
   <p align="center">
-    <!--    <a href="https://drive.google.com/file/d/1uHvKp35EkJaHpnmUyHCeTQzPx6RouVmV/view?usp=drive_link">View Demo</a>-->
+    <a href="https://drive.google.com/file/d/1uHvKp35EkJaHpnmUyHCeTQzPx6RouVmV/view?usp=drive_link">View Demo</a>
   </p>
 </div>
 
@@ -55,26 +43,49 @@
 
 This project is a chatbot for furniture recommendation using multi-agents. It integrates multiple AI technologies to provide an intelligent and interactive experience for users.
 
-### Key Features:
-- Scraped IKEA data for building a product database.
-- Used Florence-2-large for image captioning.
-- Converted images to 3D models using TRELLIS for AR visualization.
-- Stored & searched embeddings in Pinecone using mpnet-base-v2.
-- Used CrewAI with three agents (RAG, Web Scraper, and Chat) powered by Gemini LLM to handle queries intelligently.
-- Built the backend with FastAPI (deployed on Azure) and developed the mobile app using Kotlin.
-- Under development: Image recommendation system using Vision RAG, leveraging CLIP for embedding, FAISS for similarity search, and BLIP for semantic ranking.
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
-- FastAPI
-- Pinecone
-- CrewAI
-- Florence-2-large
-- TRELLIS
-- Kotlin
-- FAISS
-- BLIP
+[![FastAPI][FastAPI-badge]][FastAPI-url]
+[![CrewAI][CrewAI-badge]][CrewAI-url]
+[![Pinecone][Pinecone-badge]][Pinecone-url]
+[![FAISS][FAISS-badge]][FAISS-url]
+[![Florence-2-large][Florence-badge]][Florence-url]
+[![TRELLIS][TRELLIS-badge]][TRELLIS-url]
+[![Gemini LLM][Gemini-badge]][Gemini-url]
+[![BLIP][BLIP-badge]][BLIP-url]
+[![Kotlin][Kotlin-badge]][Kotlin-url]
+[![Azure][Azure-badge]][Azure-url]
+
+[FastAPI-badge]: https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white
+[FastAPI-url]: https://fastapi.tiangolo.com/
+
+[CrewAI-badge]: https://img.shields.io/badge/CrewAI-6C757D?style=for-the-badge&logo=ai&logoColor=white
+[CrewAI-url]: https://crewai.com/
+
+[Pinecone-badge]: https://img.shields.io/badge/Pinecone-0080FF?style=for-the-badge&logo=pinecone&logoColor=white
+[Pinecone-url]: https://www.pinecone.io/
+
+[FAISS-badge]: https://img.shields.io/badge/FAISS-6600CC?style=for-the-badge&logo=facebook&logoColor=white
+[FAISS-url]: https://faiss.ai/
+
+[Florence-badge]: https://img.shields.io/badge/Florence--2--large-006699?style=for-the-badge&logo=microsoft&logoColor=white
+[Florence-url]: https://huggingface.co/microsoft/florence-2-large
+
+[TRELLIS-badge]: https://img.shields.io/badge/TRELLIS-00A65A?style=for-the-badge&logo=3d&logoColor=white
+[TRELLIS-url]: https://huggingface.co/spaces/JeffreyXiang/TRELLIS
+
+[Gemini-badge]: https://img.shields.io/badge/Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white
+[Gemini-url]: https://aistudio.google.com/
+
+[BLIP-badge]: https://img.shields.io/badge/BLIP-4CAF50?style=for-the-badge&logo=ai&logoColor=white
+[BLIP-url]: https://huggingface.co/Salesforce/blip
+
+[Kotlin-badge]: https://img.shields.io/badge/Kotlin-0095D5?style=for-the-badge&logo=kotlin&logoColor=white
+[Kotlin-url]: https://kotlinlang.org/
+
+[Azure-badge]: https://img.shields.io/badge/Azure-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white
+[Azure-url]: https://azure.microsoft.com/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -82,7 +93,7 @@ This project is a chatbot for furniture recommendation using multi-agents. It in
 
 ### Prerequisites
 Ensure you have the following installed:
-- Python 3.8+
+- Python 3.12
 - FastAPI
 - Uvicorn
 - Pinecone client
@@ -129,8 +140,9 @@ Ensure you have the following installed:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Contact
-Saad Mohamed - [GitHub](https://github.com/MrSa3dola) - saad.mohamed@example.com
+* Saad Mohamed - [GitHub](https://github.com/MrSa3dola) - saad.2002.ms@gmail.com
+* Yara Mohamed - [GitHub](https://github.com/yara-mohamed1942001) - yaramo656@gmail.com
 
-Project Link: [https://github.com/MrSa3dola/AR_RAG](https://github.com/MrSa3dola/AR_RAG)
+[Project Link](https://github.com/MrSa3dola/AR_RAG)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
