@@ -183,8 +183,7 @@ def process_query(query: str) -> str:
             if has_high_confidence:
                 # Use RAG agent for final result
                 rag_final_task = Task(
-                    description=f"""Find furniture matching: {extracted_query}Format each result with image path, description, price, and confidence score.
-Only include results with score >= 0.9""",
+                    description=f"""Find furniture matching: {extracted_query}Don't format the result just keep it as a list""",
                     agent=rag_agent,
                     expected_output="Formatted furniture recommendations",
                 )
