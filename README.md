@@ -141,10 +141,6 @@ Ensure you have the following installed:
   - [ ] Arabic
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Contact
-* Saad Mohamed - [GitHub](https://github.com/MrSa3dola) - saad.2002.ms@gmail.com
-* Yara Mohamed - [GitHub](https://github.com/yara-mohamed1942001) - yaramo656@gmail.com
-
 [Project Link](https://github.com/MrSa3dola/AR_RAG)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
